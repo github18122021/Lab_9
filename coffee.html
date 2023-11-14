@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Object Prototypes | COMP1073 Client-Side JavaScript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/normalize.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+ 
+<body>
+    <h1>Inheritance in JavaScript</h1>
+    <p>Let's put JavaScript prototypes and inheritance to work – with <em>coffee</em>.</p>
+    <p id="output"></p>
+ 
+    <script>
+        var output = document.getElementById('output');
+        
+        function Coffee(size, isDecaf, qtyCream, qtySugar) {
+            this.size = size;
+            this.isDecaf = isDecaf;
+            this.qtyCream = qtyCream;
+            this.qtySugar = qtySugar;
+            this.decaf = (this.isDecaf === true ? 'decaffeinated' : 'caffeinated');
+            this.description = 'A ' + this.size + ' ' + this.decaf + ' coffee with ' + this.qtyCream + ' cream and ' + this.qtySugar + ' sugar.';
+        }
+        
+        Coffee.prototype.serveIt = function() {
+            var cup = document.createElement("img");
+            cup.setAttribute('title', this.description);
+            cup.setAttribute('src', 'http://clipart-library.com/images/Bcgr686di.jpg');
+            var cupSize;
+            switch (this.size) {
+                case 'small' :
+                    cupSize = '100px';
+                    break;
+                case 'medium' :
+                    cupSize = '125px';
+                    break;
+                case 'large' :
+                    cupSize = '150px';
+                    break;
+                default :
+                    cupSize = '100px';
+            }
+            cup.setAttribute('height', cupSize);
+            output.appendChild(cup);
+        }
+        
+        function Latte(size, isDecaf, qtyCream, qtySugar, milkType) {
+            Coffee.call(this, size, isDecaf, qtyCream, qtySugar);
+            this.milkType = milkType;
+            this.description = 'A ' + this.size + ' ' + this.decaf + ' latte made with ' + this.milkType + ' steamed milk.';
+        }
+        
+        Latte.prototype = Object.create(Coffee.prototype);
+        Latte.prototype.constructor = Latte;
+        
+        Latte.prototype.serveIt = function() {
+            var cup = document.createElement("img");
+            cup.setAttribute('title', this.description);
+            cup.setAttribute('src', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKx2LGpaJ3Cy0mQ-zITE5-Li2M18wwGj-cJXtp_5qnRp8LVvM&s');
+            var cupSize;
+            switch (this.size) {
+                case 'small' :
+                    cupSize = '75px';
+                    break;
+                case 'medium' :
+                    cupSize = '100px';
+                    break;
+                case 'large' :
+                    cupSize = '125px';
+                    break;
+                default :
+                    cupSize = '75px';
+            }
+            cup.setAttribute('height', cupSize);
+            output.appendChild(cup);
+        }
+        
+        var myCoffee = new Coffee('large', false, 2, 1);
+        myCoffee.serveIt();
+        
+        var myLatte = new Latte('medium', false, 0, 1, '2%');
+        myLatte.serveIt();
+        
+        var yourLatte = new Latte('large', true, 0, 2, 'whole');
+        yourLatte.serveIt();
+        
+        function Espresso(size, isDecaf, qtyCream, qtySugar) {
+            Coffee.call(this, size, isDecaf, qtyCream, qtySugar);
+            this.espressoType = 'single';
+            this.description = 'A ' + this.size + ' ' + this.decaf + ' espresso with ' + this.qtyCream + ' cream and ' + this.qtySugar + ' sugar.';
+        }
+        
+        Espresso.prototype = Object.create(Coffee.prototype);
+        Espresso.prototype.constructor = Espresso;
+        
+        Espresso.prototype.serveIt = function() {
+            var cup = document.createElement("img");
+            cup.setAttribute('title', this.description);
+            cup.setAttribute('src', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcmmXhR7TdHSRwg-MLHlsW7jHJdnEZtjulrgszQRe7sbOzxvE&s');
+            var cupSize;
+            switch (this.size) {
+                case 'small' :
+                    cupSize = '75px';
+                    break;
+                case 'medium' :
+                    cupSize = '100px';
+                    break;
+                case 'large' :
+                    cupSize = '125px';
+                    break;
+                default :
+                    cupSize = '75px';
+            }
+            cup.setAttribute('height', cupSize);
+            output.appendChild(cup);
+        }
+        
+        var myEspresso = new Espresso('large', false, 0, 0);
+        myEspresso.serveIt();
+    </script>
+</body>
+</html>
